@@ -2,14 +2,11 @@
 require "./databaseSingleton.php";
 if(!empty($_GET)){
     if(!empty($_GET["type"]) && $_GET["type"] == "quizzes"){
-        $query = <<<QUERY
-            SELECT * FROM quiz;
-QUERY;
+        $query = "SELECT * FROM quiz;";
         echo(json_encode(Database::getInstance()->query($query)));
     }
     if(!empty($_GET["quizId"])){
-        $query = <<<QUERY
-            SELECT 
+        $query = "SELECT 
                 q.question_id,
                 q.question,
                 GROUP_CONCAT(CONCAT(a.answer_id, ':', a.answer) ORDER BY a.answer_id) AllAnswers
@@ -17,7 +14,7 @@ QUERY;
             join answers as a ON a.question_id = q.question_id
             WHERE q.quiz_id = :quizId
             group by q.question_id
-QUERY;
+        ";
         $tmpPdo = Database::getInstance()->getPdo();
         $stmt = $tmpPdo->prepare($query);
         $stmt->bindParam(":quizId", $_GET["quizId"], PDO::PARAM_INT);

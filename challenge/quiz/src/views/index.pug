@@ -59,9 +59,9 @@ html
     script(src="../../bower_components/requirejs/require.js")
     script(src="../../app.js")
     script.
+        // Document level reference to the current MainViewModel for console debugging.
         var mvvm;
-        require(["knockout", "app"], 
-        (ko, app)=>{
+        require(["knockout", "app"], (ko, app)=>{
             var mvm = new app["MainViewModel"]();
             mvvm = mvm;
             $.ajax({
@@ -81,6 +81,7 @@ html
                 url: "../../api/submitQuiz.php", 
                 type: "post",
                 context: mvvm,
+                // passing showResult directly causes unintended page reload.
                 success: (list)=>{
                     mvvm.showResult(list)
                 }

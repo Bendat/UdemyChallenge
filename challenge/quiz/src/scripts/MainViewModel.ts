@@ -3,14 +3,27 @@ import { Quiz } from "./Quiz";
 
 declare var $: any;
 /**
+ * @class
  * Represents the main page of the website.
  */
 export class MainViewModel {
 
+    /**
+     * @member {KnockoutObservableAarray<Quiz>} An observable list of Quiz objects.
+     */
     public quizList: KnockoutObservableArray<Quiz>
+    /** 
+     * @member {KnockoutComputed<Quiz>} A filter around this.quizList that accounts for the searchbar value,
+    */
     public visibleQuizList: KnockoutComputed<Quiz[]>;
+    /**
+     * @member {KnockoutObservable<Quiz>} The active Quiz being rendered.
+     */
     public currentQuiz: KnockoutObservable<Quiz>;
 
+    /**
+     * @member {KnockoutObservable<string>} The current search term in the searchbar.
+     */
     public searchText: KnockoutObservable<string>;
 
     /**

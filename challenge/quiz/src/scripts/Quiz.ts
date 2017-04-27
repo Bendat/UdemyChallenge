@@ -50,9 +50,10 @@ export class Quiz {
     }
 
     /**
-     * Sets this quiz as the current active quiz in it's parent ViewModel
+     * Sets this Quiz as the current active quiz in it's parent ViewModel
      */
     public setCurrent(): void{
+        // If this Quiz is a skeleton object, retrieve its Questions and their associated answers.
         if (!this.isComplete()) {
             $.ajax({
                 type: "GET",
