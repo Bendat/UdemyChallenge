@@ -1,0 +1,29 @@
+{
+  "name": "quiz",
+  "version": "1.0.0",
+  "description": "Solution to Udemy Quiz Challenge",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "Ben Aherne",
+  "license": "ISC",
+  "dependencies": {
+    "@types/knockout": "^3.4.40",
+    "bootstrap": "^3.3.7",
+    "jade": "^1.11.0",
+    "knockout": "^3.4.2",
+    "requirejs": "^2.3.3"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-less": "^3.3.0",
+    "gulp-pug": "^3.3.0",
+    "gulp-typescript": "^3.1.6",
+    "less": "^2.7.2",
+    "pug": "^2.0.0-beta.12",
+    "typescript": "^2.2.2",
+    "hashcode": "^1.0.3",
+    "lodash": "^4.17.2"
+  }
+}

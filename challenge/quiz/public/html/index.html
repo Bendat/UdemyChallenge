@@ -1,0 +1,35 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width = device-width, initial-scale = 1"><title>Quiz Challenge</title><script src="https://code.jquery.com/jquery-3.2.1.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.1/jquery.form.min.js" integrity="sha384-tIwI8+qJdZBtYYCKwRkjxBGQVZS3gGozr3CtI+5JF/oL1JmPEHzCEnIKbDbLTCer" crossorigin="anonymous"></script><link href="https://fonts.googleapis.com/css?family=Fjalla+One" rel="stylesheet"><link href="https://fonts.googleapis.com/css?family=Average" rel="stylesheet"><link rel="stylesheet" type="text/css" href="../css/main.css"></head><body><header><ul><li><a alt="Unimplemented" title="Unimplemented" onclick="alert('This button is just for show!')">New Quiz</a></li><li><a onclick="window.location.reload()">Home</a></li></ul></header><div class="main-body-container"><aside><header><h1>Quizes</h1><input type="search" placeholder="Search Quizes" data-bind="textInput: searchText"></header><ul data-bind="foreach: visibleQuizList"><li data-bind="attr:{id: id}, text: name, click: setCurrent"></li></ul></aside><main id="main-body"><form id="quiz-form" data-bind="if: $data.currentQuiz()"><fieldset><legend data-bind="text: currentQuiz().name"></legend><section id="open-quiz" data-bind="foreach: currentQuiz().questions"><article class="question-article"><h2 data-bind="text: question"></h2><section class="answers" data-bind="foreach: answers"><div class="answer-container"><input type="radio" data-bind="attr:{name: $parent.id, id: $parent.id, value: id}"><label data-bind="text: answer, attr:{for: $parent.id}"></label></div></section></article></section><input id="submitter" type="submit" value="submit"></fieldset></form><article id="home" data-bind="ifnot: $data.currentQuiz(), visible: !$data.currentQuiz()"><h1>Lorem Ipsum</h1><p>Pulvinar ligula. Nullam. Proin aliquam netus facilisi mi lobortis fringilla nonummy sociis lorem. Cubilia pede urna. Curabitur, commodo odio metus vivamus aptent aliquam sit.</p><p>Habitasse magnis dolor quis. Imperdiet convallis fringilla est nec porttitor curabitur. Fusce dignissim ridiculus quis interdum accumsan Dictum eros ullamcorper Ad parturient ultricies Eget magnis mattis. Arcu netus tristique semper tortor netus nascetur fermentum imperdiet turpis vivamus cum aenean interdum faucibus adipiscing curabitur commodo mollis. Diam taciti cras semper.</p><p>Habitasse tristique suspendisse ligula libero. In elit lectus dictum quisque neque feugiat purus consequat justo ornare justo purus lectus Donec enim quam risus vel. Consequat, vulputate tellus.</p></article><!-- ko if: currentQuiz() --><article id="result" data-bind="visible: currentQuiz().result() &gt; -1"><span id="announce-result">You got</span><span id="result-span" data-bind="text: currentQuiz().result() + '%'"></span><span class="result-message" data-bind="if: currentQuiz().result() &lt; 50">Better Luck Next Time</span><span class="result-message" data-bind="if: currentQuiz().result() &gt;= 50 &amp;&amp; currentQuiz().result() &lt; 75">Good job!</span><span class="result-message" data-bind="if:currentQuiz().result() &gt;= 75">Excellent!</span></article><!-- /ko --></main></div></body><script src="../../bower_components/requirejs/require.js"></script><script src="../../app.js"></script><script>var mvvm;
+require(["knockout", "app"], 
+(ko, app)=>{
+    var mvm = new app["MainViewModel"]();
+    mvvm = mvm;
+    $.ajax({
+        type: "GET",
+        url: "../../api/submitQuiz.php",
+        context: mvm,
+        data: "type=quizzes",
+        datatype: "json",
+        success: mvm.addQuizes
+    });
+    ko.applyBindings(mvm);
+    
+});
+
+$(function() {   
+    $(document).ajaxStop(function(){
+        //window.location.reload();
+    }); 
+    $( "quiz-form" ).on( "submit", function( event ) {
+        event.preventDefault();
+        console.log( $( this ).serialize() );
+    });
+    $('#quiz-form').ajaxForm({
+        url: "../../api/submitQuiz.php", 
+        type: "post",
+        context: mvvm,
+        success: function(list){
+            mvvm.showResult(list)
+        }
+    });
+
+});</script></html>

@@ -1,0 +1,89 @@
+doctype html
+html
+    head
+        meta(charset="utf-8")
+        meta(name="viewport" content="width = device-width, initial-scale = 1")
+        title Quiz Challenge
+        //- script(data-main="../../app.js" src="../../bower_components/requirejs/require.js")
+        script(src="https://code.jquery.com/jquery-3.2.1.min.js")
+        script(src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.1/jquery.form.min.js" integrity="sha384-tIwI8+qJdZBtYYCKwRkjxBGQVZS3gGozr3CtI+5JF/oL1JmPEHzCEnIKbDbLTCer" crossorigin="anonymous")
+
+        link(href="https://fonts.googleapis.com/css?family=Fjalla+One" rel="stylesheet")
+        link(href="https://fonts.googleapis.com/css?family=Average" rel="stylesheet")
+        link(rel="stylesheet" type="text/css" href="../css/main.css")
+
+    body
+        header
+            ul
+                li
+                    a(alt="Unimplemented" title="Unimplemented" onclick="alert('This button is just for show!')") New Quiz
+                li
+                    a(onclick="window.location.reload()") Home
+        div.main-body-container
+            aside
+                header
+                    h1 Quizes
+                    input(type="search" placeholder="Search Quizes" data-bind="textInput: searchText")
+                ul(data-bind="foreach: visibleQuizList")
+                    li(data-bind="attr:{id: id}, text: name, click: setCurrent")
+                    
+            main#main-body
+                form#quiz-form(data-bind="if: $data.currentQuiz()")
+                    fieldset
+                        legend(data-bind="text: currentQuiz().name")
+                        section#open-quiz(data-bind="foreach: currentQuiz().questions")
+                            article.question-article
+                                h2(data-bind="text: question")
+                                section.answers(data-bind="foreach: answers")
+                                    div.answer-container
+                                        input(type="radio" data-bind="attr:{name: $parent.id, id: $parent.id, value: id}")
+                                        label(data-bind="text: answer, attr:{for: $parent.id}")
+                        input#submitter(type="submit" value="submit")
+
+                article#home(data-bind="ifnot: $data.currentQuiz(), visible: !$data.currentQuiz()")
+                    h1 Lorem Ipsum
+                    p Pulvinar ligula. Nullam. Proin aliquam netus facilisi mi lobortis fringilla nonummy sociis lorem. Cubilia pede urna. Curabitur, commodo odio metus vivamus aptent aliquam sit.
+
+                    p Habitasse magnis dolor quis. Imperdiet convallis fringilla est nec porttitor curabitur. Fusce dignissim ridiculus quis interdum accumsan Dictum eros ullamcorper Ad parturient ultricies Eget magnis mattis. Arcu netus tristique semper tortor netus nascetur fermentum imperdiet turpis vivamus cum aenean interdum faucibus adipiscing curabitur commodo mollis. Diam taciti cras semper.
+
+                    p Habitasse tristique suspendisse ligula libero. In elit lectus dictum quisque neque feugiat purus consequat justo ornare justo purus lectus Donec enim quam risus vel. Consequat, vulputate tellus.
+                <!-- ko if: currentQuiz() -->
+                article#result(data-bind="visible: currentQuiz().result() > -1")
+                    span#announce-result You got
+                    span#result-span(data-bind="text: currentQuiz().result() + '%'")
+                    span.result-message(data-bind="if: currentQuiz().result() < 50") Better Luck Next Time
+                    span.result-message(data-bind="if: currentQuiz().result() >= 50 && currentQuiz().result() < 75") Good job!
+                    span.result-message(data-bind="if:currentQuiz().result() >= 75") Excellent!
+                <!-- /ko -->
+
+    script(src="../../bower_components/requirejs/require.js")
+    script(src="../../app.js")
+    script.
+        var mvvm;
+        require(["knockout", "app"], 
+        (ko, app)=>{
+            var mvm = new app["MainViewModel"]();
+            mvvm = mvm;
+            $.ajax({
+                type: "GET",
+                url: "../../api/submitQuiz.php",
+                context: mvm,
+                data: "type=quizzes",
+                datatype: "json",
+                success: mvm.addQuizes
+            });
+            ko.applyBindings(mvm);
+            
+        });
+ 
+        $(function() {
+            $('#quiz-form').ajaxForm({
+                url: "../../api/submitQuiz.php", 
+                type: "post",
+                context: mvvm,
+                success: (list)=>{
+                    mvvm.showResult(list)
+                }
+            });
+
+        });

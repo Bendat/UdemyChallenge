@@ -1,0 +1,24 @@
+{
+  "name": "quiz",
+  "description": "Solution to Udemy Quiz Challenge",
+  "main": "index.js",
+  "authors": [
+    "Ben Aherne"
+  ],
+  "license": "ISC",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "knockout": "^3.4.2"
+  },
+  "devDependencies": {
+    "requirejs": "^2.3.3"
+  }
+}
