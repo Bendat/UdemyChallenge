@@ -29,6 +29,7 @@ If I had additional time there would be a number of features I would like to hav
 
 * Routing on the backend to avoid long path to index and generally clean up the api (current I use redundant query strings to identify what action should be taken).
 * Restructuring on the database to make it simpler to find the Quiz associated with an answer. Currently answers reference only their question, this turned out to add a degree of complexity in retreiving the result as unanswered questions would not be calculated, when they should be calculated as incorrect. Referencing the quiz would avoid the complex subquery chain used in the calculation. This design was made with the assumption that results would be calculated client side (which is evident from questionAnswersPair.ts containing a reference to whether an answer is the correct one), but I decided later that was a bad idea.
+* Some database naming schemes are inconsistent (table `answers` - plural, table `question` - singular). 
 * General UI improvements including disabling the submit button until all questions were answered, and a results page where correct answers are in green and incorrect answers are in red. Currently the app only shows your percentage.
 * Optional negative marking.
 * A quiz creation interface (this was explicitely not required).
