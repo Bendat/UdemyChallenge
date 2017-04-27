@@ -8,9 +8,6 @@ This application (referred to here as QuizChallenge) attempts to be a webapp whe
 QuizChallenge is a full stack solution, however most of the focus is on the front end, with the backend only responsible for retrieving data and calculating the final result.
 
 
-QuizChallenge is developed in Typescript, pug and less. The build toolchain is simple and only uses gulp, emphasis was not placed on resolving urls through routing or otherwise
-so the app must be run from public/build/html. Typescript acts as an excellent utility to ensure a number of what would be runtime errors are caught at compile time through static typing which is why I used it. 
-
 # Architecture
 
 
