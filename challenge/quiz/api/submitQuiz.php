@@ -22,15 +22,12 @@ if(!empty($_GET)){
         echo(json_encode(toHierarchicalQuiz($stmt->fetchAll())));
     }
 
-}
-if(!empty($_POST)){
+}else if(!empty($_POST)){
     echo getMark(getAnswers());
 }else{
-    if(empty($_GET)){
-        $res = array();
-        $res["result"] = 0;
-        echo json_encode($res);
-    }
+    $res = array();
+    $res["result"] = 0;
+    echo json_encode($res);
 }
 
 /**
